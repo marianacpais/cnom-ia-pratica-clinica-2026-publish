@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Do problema à ferramenta · prompts</title>
+<style>
+:root{--v:#3B2EFF;--g:#0AC298;--y:#FFDD02;--n:#0B1F3A;--bg:#F2F4F1}
+body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--n);line-height:1.5}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{color:var(--v);font-size:1.8em;margin:.2em 0}h2{color:var(--v);margin-top:1.6em;font-size:1.25em}
+.lead{color:#4A5871}.step{background:#fff;border-radius:14px;padding:14px 16px;margin:12px 0;border-left:5px solid var(--g)}
+pre{white-space:pre-wrap;background:var(--n);color:#fff;border-radius:10px;padding:12px 14px;font-size:.95em;margin:8px 0}
+button{background:var(--v);color:#fff;border:0;border-radius:8px;padding:7px 12px;font-size:.9em;cursor:pointer}
+.note{font-size:.9em;color:#4A5871}.tag{display:inline-block;background:var(--y);border-radius:6px;padding:0 6px;font-size:.8em;font-weight:700}
+</style></head><body><main>
+<p class="note"><a href="index.html">← Página do workshop</a></p>
+<p class="tag">29.º Congresso Nacional da Ordem dos Médicos · 12/11/2026</p>
+<h1>Do problema à ferramenta</h1>
+<p class="lead">Os pedidos do workshop, para experimentarem no vosso assistente (Claude, ChatGPT ou outro). Usem sempre casos inventados.</p>
+
+<h2>1 · Pedir bem</h2>
+<div class="step"><b>O pedido vago</b><pre>Tenho pouco tempo para acompanhar a evidência e para explicar as coisas às pessoas que me procuram. Ajuda-me.</pre><button>Copiar</button></div>
+<div class="step"><b>O pedido bem feito</b><pre>Sou médico. Quero uma solução para duas coisas: acompanhar todas as semanas o que sai de novo sobre os agonistas do recetor GLP-1 na obesidade, e transformar isso em informação simples, com fontes, para quem me pergunta. Dá-me três soluções possíveis, com o que cada uma exige, e diz o que não sabes. Nada de recomendações clínicas.</pre><button>Copiar</button></div>
+
+<h2>2 · Só com os dados de treino, e depois com fontes</h2>
+<div class="step"><b>Sem pesquisa nem conectores</b><pre>Quais são os 5 artigos mais recentes sobre agonistas do recetor GLP-1 e obesidade? Dá-me as referências completas.</pre><button>Copiar</button><p class="note">Depois liguem a pesquisa ou o conector do PubMed e repitam. Abram uma das referências.</p></div>
+
+<h2>3 · O radar, com a skill</h2>
+<div class="step"><pre>Usa a skill folhetos-com-fontes: o que saiu na última semana sobre agonistas do recetor GLP-1 e obesidade?</pre><button>Copiar</button><p class="note">Repitam o pedido. A lista deve ser igual, o resumo muda.</p></div>
+
+<h2>4 · O folheto e o email</h2>
+<div class="step"><pre>Com estes artigos, faz um folheto de uma página, em linguagem simples, para quem me pergunta sobre este tema. Datado, com as fontes no fim. E escreve o rascunho do email que o acompanha.</pre><button>Copiar</button></div>
+
+<h2>5 · Uma notícia falsa (para rir, e pensar)</h2>
+<div class="step"><pre>Cria uma capa de jornal, com aspeto realista, com a notícia: "Médica do workshop do CNOM garante que [uma coisa que notaram]". Título, subtítulo, uma citação inventada e a data de hoje.</pre><button>Copiar</button></div>
+
+<h2>A skill para levar</h2>
+<div class="step"><p><b>No Claude</b> · Definições → Skills → Adicionar → Fazer upload de Skill → escolher o ficheiro .zip.</p><p><b>No ChatGPT</b> · colar as instruções do ficheiro SKILL.md nas instruções de um projeto.</p><p><a href="skill-folhetos-com-fontes.zip" download>Descarregar a skill (.zip)</a></p></div>
+
+<p class="note">Material de apoio ao workshop «Inteligência Artificial na Prática Clínica». Nada aqui é recomendação clínica.</p>
+</main>
+<script>document.querySelectorAll('.step button').forEach(b=>b.onclick=()=>{navigator.clipboard.writeText(b.previousElementSibling.textContent);b.textContent='Copiado';setTimeout(()=>b.textContent='Copiar',1500)})</script>
+</body></html>

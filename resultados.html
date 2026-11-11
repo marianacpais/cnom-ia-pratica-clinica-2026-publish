@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retrato da sala · CNOM 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><script src="config.js"></script></head><body><main>
+<span class="tag">CNOM 2026 · Inteligência Artificial na Prática Clínica</span>
+<h1>Retrato da sala</h1>
+<div class="kpi"><b id="n">0</b><span>respostas</span></div>
+<p class="status" id="status">A carregar…</p>
+<div class="grid">
+  <div class="card wide"><h2>Numa palavra, para que usaram a IA esta semana?</h2><div class="cloud" id="cloud"></div></div>
+  <div class="card wide"><h2>O que vos rouba mais tempo</h2><div class="quotes" id="tempo"></div></div>
+  <div class="card"><h2>Com que frequência usam IA no trabalho</h2><div id="freq"></div></div>
+  <div class="card"><h2>Que ferramentas usam</h2><div id="tools"></div></div>
+  <div class="card"><h2>Usavam uma referência sem abrir a fonte?</h2><div id="ref"></div></div>
+  <div class="card"><h2>Já colaram dados de uma pessoa real?</h2><div id="dados"></div></div>
+  <div class="card"><h2>O que querem levar daqui</h2><div id="levar"></div></div>
+  <div class="card"><h2>Em que fase estão</h2><div id="fase"></div></div>
+</div>
+<p class="note" style="margin-top:20px"><a href="index.html">← Página do workshop</a> · Respostas anónimas, atualizadas a cada 15 segundos.</p>
+</main>
+<script>
+const Q={palavra:'Numa palavra',tempo:'rouba mais tempo',freq:'frequência',tools:'ferramentas',ref:'referência',dados:'dados de uma pessoa',levar:'levar daqui',fase:'fase'};
+const ORDER={freq:['Nunca','Raramente','Todas as semanas','Todos os dias'],dados:['Não','Sim, depois de os anonimizar','Sim','Prefiro não dizer'],fase:['Estudante','Interno','Especialista','Outra'],
+ tools:['ChatGPT','Claude','Gemini','Copilot','OpenEvidence','Nenhuma'],levar:['Pedir melhor','Respostas com fontes','Automatizar uma tarefa','Saber o que é lícito','Criar a minha própria ferramenta']};
+const STOP=new Set('a o e de da do das dos para com em no na nos nas um uma uns umas que se por ao à os as é ou mais muito eu me meu minha'.split(' '));
+const params=new URLSearchParams(location.search);
+if(params.has('ecra'))document.body.classList.add('ecra');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function parseCSV(t){const rows=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];
+ if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}
+ else if(c=='"')q=true;else if(c==','){r.push(f);f=''}else if(c=='\n'){r.push(f);rows.push(r);r=[];f=''}else if(c!='\r')f+=c}
+ if(f||r.length){r.push(f);rows.push(r)}return rows.filter(x=>x.some(v=>v.trim()))}
+
+function demo(){const W=['resumos','emails','artigos','nada','traduções','cartas','pesquisa','resumos','apresentações','emails','dúvidas','resumos','relatórios','nada','código','pesquisa','emails'];
+ const T=['Relatórios e cartas de referenciação','Responder a emails','Pesquisar evidência atualizada','Registos clínicos','Burocracia das baixas','Preparar aulas','Ler artigos'];
+ const h=['Carimbo',Object.values(Q).map(x=>x)].flat();const rows=[];
+ for(let i=0;i<34;i++){const p=a=>a[Math.floor(Math.random()*a.length)];
+  rows.push(['',p(W),p(T),p(ORDER.freq),[p(ORDER.tools),p(ORDER.tools)].filter((v,j,a)=>a.indexOf(v)==j).join(', '),String(1+Math.floor(Math.random()*5)),p(ORDER.dados),[p(ORDER.levar),p(ORDER.levar)].filter((v,j,a)=>a.indexOf(v)==j).join(', '),p(ORDER.fase)])}
+ return [h,...rows]}
+
+function col(h,key){return h.findIndex(x=>x.toLowerCase().includes(Q[key].toLowerCase()))}
+function bars(el,counts,total,order,hl){
+ const keys=order?[...order,...Object.keys(counts).filter(k=>!order.includes(k))]:Object.keys(counts);
+ const items=keys.filter(k=>counts[k]||(order&&order.includes(k))).map(k=>[k,counts[k]||0]);
+ if(!order)items.sort((a,b)=>b[1]-a[1]);
+ if(!total){el.innerHTML='<p class="empty">À espera das respostas.</p>';return}
+ el.innerHTML=items.map(([k,n])=>`<div class="bar${hl&&hl(k)?' hl':''}"><span>${esc(k)}</span><span class="t"><i data-w="${Math.round(100*n/total)}"></i></span><span class="p">${Math.round(100*n/total)}%</span></div>`).join('');
+ requestAnimationFrame(()=>el.querySelectorAll('i').forEach(i=>i.style.width=i.dataset.w+'%'))}
+function count(rows,i,multi){const c={};rows.forEach(r=>{const v=(r[i]||'').trim();if(!v)return;(multi?v.split(/,\s*(?=[A-ZÁÉÍÓÚ])/):[v]).forEach(x=>{x=x.trim();if(x)c[x]=(c[x]||0)+1})});return c}
+
+let lastN=-1;
+function render(rows){const h=rows[0]||[],data=rows.slice(1),N=data.length;
+ document.getElementById('n').textContent=N;
+ document.getElementById('status').textContent=(params.has('demo')?'Dados de exemplo · ':'')+'Atualizado às '+new Date().toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+ if(N===lastN)return;lastN=N;
+ const iw=col(h,'palavra'),it=col(h,'tempo');
+ const wc={};data.forEach(r=>(r[iw]||'').toLowerCase().replace(/[.,;:!?()"«»]/g,' ').split(/\s+/).forEach(w=>{if(w.length>1&&!STOP.has(w))wc[w]=(wc[w]||0)+1}));
+ const words=Object.entries(wc).sort((a,b)=>b[1]-a[1]).slice(0,40),mx=words.length?words[0][1]:1;
+ const cl=document.getElementById('cloud');
+ cl.innerHTML=words.length?words.map(([w,n],k)=>`<span class="${k<3?'top':''}" style="font-size:${(1+2.6*n/mx).toFixed(2)}em;animation-delay:${(k*0.05).toFixed(2)}s">${esc(w)}</span>`).sort(()=>Math.random()-.5).join(''):'<p class="empty">À espera das respostas.</p>';
+ const tq=data.map(r=>(r[it]||'').trim()).filter(Boolean).reverse().slice(0,12);
+ document.getElementById('tempo').innerHTML=tq.length?tq.map((t,k)=>`<div style="animation-delay:${k*0.06}s">${esc(t)}</div>`).join(''):'<p class="empty">À espera das respostas.</p>';
+ bars(document.getElementById('freq'),count(data,col(h,'freq')),N,ORDER.freq);
+ const tc=count(data,col(h,'tools'),true);bars(document.getElementById('tools'),tc,N,null);
+ const rc=count(data,col(h,'ref'));const rl={};['1','2','3','4','5'].forEach(k=>rl[k+(k=='1'?' · nunca':k=='5'?' · sem problema':' ·')]=rc[k]||0);
+ bars(document.getElementById('ref'),rl,N,Object.keys(rl),k=>k[0]>='4');
+ bars(document.getElementById('dados'),count(data,col(h,'dados')),N,ORDER.dados,k=>k=='Sim');
+ bars(document.getElementById('levar'),count(data,col(h,'levar'),true),N,ORDER.levar);
+ bars(document.getElementById('fase'),count(data,col(h,'fase')),N,ORDER.fase)}
+
+async function load(){
+ if(params.has('demo')){render(demo());return}
+ if(!window.CNOM||!CNOM.csv){render([[]]);document.getElementById('status').textContent='O retrato abre no início do workshop.';return}
+ try{const r=await fetch(CNOM.csv+(CNOM.csv.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'});render(parseCSV(await r.text()))}
+ catch(e){document.getElementById('status').textContent='Sem ligação à folha neste momento. Volta a tentar sozinho.'}}
+load();if(!params.has('demo'))setInterval(load,15000);
+</script></body></html>
