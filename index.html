@@ -1,19 +1,27 @@
 <!doctype html>
 <html lang="pt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>IA na prática clínica · CNOM 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"><script src="config.js"></script></head><body><main>
-<span class="tag">29.º Congresso Nacional da Ordem dos Médicos · 12/11/2026</span>
-<h1>Inteligência Artificial na Prática Clínica</h1>
-<p class="lead">Workshop · do problema à ferramenta</p>
-<a id="responder" class="big-btn" href="#">Responder ao retrato da sala<small>Dois minutos, anónimo</small></a>
-<div class="links">
-  <a href="resultados.html"><b>Retrato da sala</b>As respostas, ao vivo</a>
-  <a href="prompts.html"><b>Os pedidos do workshop</b>Para copiar e experimentar</a>
-  <a href="skill-folhetos-com-fontes.zip" download><b>A skill para levar</b>folhetos-com-fontes (.zip)</a>
-  <a href="diapositivos.html" id="lnk-slides"><b>Diapositivos</b>A apresentação</a>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="style.css"><script src="config.js"></script></head><body class="home">
+<header class="hero"><div class="hero-in">
+  <div class="hero-text">
+    <span class="tag">29.º Congresso Nacional da Ordem dos Médicos · 12/11/2026</span>
+    <h1>Inteligência Artificial na Prática Clínica</h1>
+    <p class="hero-sub">Workshop · do problema à ferramenta</p>
+    <p class="hero-who">Ricardo Cruz-Correia · Mariana Canelas Pais<br><span>Moderação de Maria Rita Melo</span></p>
+    <a id="responder" class="big-btn" href="#"><i class="fa-solid fa-mobile-screen"></i> Responder ao retrato da sala<small>Dois minutos, anónimo</small></a>
+  </div>
+  <div class="hero-qr"><img src="qr-pagina.png" alt="QR desta página"><span>Abram no telemóvel</span></div>
+</div></header>
+<main>
+<div class="tiles">
+  <a href="diapositivos.html" class="tile"><i class="fa-solid fa-display"></i><b>Diapositivos</b><span>A apresentação, com o plano B da demonstração</span></a>
+  <a href="resultados.html" class="tile"><i class="fa-solid fa-chart-column"></i><b>Retrato da sala</b><span>As respostas, ao vivo</span></a>
+  <a href="prompts.html" class="tile"><i class="fa-regular fa-copy"></i><b>Os pedidos do workshop</b><span>Para copiar e experimentar</span></a>
+  <a href="skill-folhetos-com-fontes.zip" download class="tile"><i class="fa-solid fa-puzzle-piece"></i><b>A skill para levar</b><span>folhetos-com-fontes, pronta a instalar no Claude ou no ChatGPT</span></a>
 </div>
-<p class="note" style="margin-top:24px">Material de apoio ao workshop. Nada aqui é recomendação clínica.</p>
+<p class="note foot">Material de apoio ao workshop. Nada aqui é recomendação clínica. Usem sempre casos inventados.</p>
 </main>
 <script>
 const b=document.getElementById('responder');
